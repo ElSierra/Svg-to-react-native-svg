@@ -15,12 +15,13 @@ import { ArrowRightIcon } from "lucide-react";
 import { parseXML } from "@/util/parserXML";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { duotoneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { parseXMLReact } from "@/util/parseXMLReact";
 
 export function EnhancedStringEcho() {
   const [inputText, setInputText] = useState("");
   const [functionName, setFunctionName] = useState("");
   const [outputText, setOutputText] = useState("");
-
+  const [xmlReact, setXmlReact] = useState("");
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputText(e.target.value);
   };
@@ -33,6 +34,7 @@ export function EnhancedStringEcho() {
       return;
     }
     setOutputText(await parseXML(inputText, functionName));
+    setXmlReact(await parseXMLReact(inputText));
     setInputText("");
     setFunctionName("");
   };
@@ -45,7 +47,8 @@ export function EnhancedStringEcho() {
             SVG to React Native JSX Converter
           </CardTitle>
           <p className="text-center text-sm text-gray-500">
-          Copy SVG from Figma and paste it here to convert it to React Native JSX.
+            Copy SVG from Figma and paste it here to convert it to React Native
+            JSX.
           </p>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -89,6 +92,9 @@ export function EnhancedStringEcho() {
               Generate Output
               <ArrowRightIcon className="ml-2 h-4 w-4 transition-transform duration-300 ease-in-out group-hover:translate-x-1" />
             </Button>
+          </div>
+          <div className="flex justify-center">
+            <div dangerouslySetInnerHTML={{ __html: xmlReact }} />
           </div>
           <div className="space-y-2">
             <Label
